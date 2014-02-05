@@ -9,6 +9,11 @@
 
 from sys import argv
 
+cum = False
+if len(argv) > 0 and argv[1] == "-c":
+    cum = True
+    del argv[1]
+
 N = int(argv[1])
 pm = float(argv[2])   # probability of male in population
 # in binary intra-gender conversation...
@@ -42,10 +47,21 @@ def phm(i, n):
 def phf(i, n):
     return ph(phf11, i, n)
 
+print("i =  ", end="")
+for i in range(N):
+    d = len(str(i))
+    pre = 3 - int(d / 2)
+    print(' ' * pre + str(i) + ' ' * (5 - d - pre), end="")
+print()
 for (name, f) in [("phm", phm), ("phf", phf)]:
-    print(name)
-    for n in range(1, N + 1):
-        for i in range(0, n + 1):
-            print(" " + "{0:5.3f}".format(f(i, n))[1:], end="")
-        print()
+    print(name + ": ", end="")
+    pt = 0.0
+    for i in range(0, N + 1):
+        p = f(i, N)
+        if not cum:
+            pt = p
+        print(" " + "{0:5.3f}".format(pt)[1:], end="")
+        if i > N / 8 and p < 0.001:
+            break
+        pt += p
     print()
