@@ -58,10 +58,10 @@ for (name, f) in [("phm", phm), ("phf", phf)]:
     pt = 0.0
     for i in range(0, N + 1):
         p = f(i, N)
-        if not cum:
-            pt = p
-        print(" " + "{0:5.3f}".format(pt)[1:], end="")
         if i > N / 8 and p < 0.001:
             break
         pt += p
+        print(" " + "{0:5.3f}".format(pt)[1:], end="")
+        if not cum:
+            pt = 0.0
     print()
