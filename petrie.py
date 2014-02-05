@@ -18,6 +18,9 @@ psf = float(argv[4])   # probability female partner makes sexist remark
 phf11 = pm * psm
 phm11 = (1 - pm) * psf
 
+# ph memo table
+memo = {}
+
 def ph(ph11, i, n):
     if i < 0:
         return 0.0
@@ -27,7 +30,11 @@ def ph(ph11, i, n):
         return 1 - ph11
     if i == 1 and n == 1:
         return ph11
-    return ph(ph11, i, n - 1) * (1 - ph11) + ph(ph11, i - 1, n - 1) * ph11
+    if (ph11, i, n) in memo:
+        return memo[(ph11, i, n)]
+    newmemo = ph(ph11, i, n - 1) * (1 - ph11) + ph(ph11, i - 1, n - 1) * ph11
+    memo[(ph11, i, n)] = newmemo
+    return newmemo
 
 def phm(i, n):
     return ph(phm11, i, n)
